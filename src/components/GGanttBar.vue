@@ -5,18 +5,21 @@
       top: `${nTop}px`,
       left: `${xStart}px`,
       width: `${xEnd - xStart}px`,
-      height: `${rowHeight * 0.8}px`,
+      // height: `${rowHeight * 0.8}px`,/** `${rowHeight * 0.8}px`*/
       zIndex: isDragging ? 3 : 2
     }"
     draggable="true"
     @mousedown="onMouseEvent" @click="onMouseEvent" @dblclick="onMouseEvent" @mouseenter="onMouseEvent"
     @mouseleave="onMouseEvent" @contextmenu="onMouseEvent">
     <div class="g-gantt-bar-label">
-      <slot :bar="bar">
+      <!-- <slot :bar="bar"> -->
         <div>
           {{ barConfig.label || "" }}
         </div>
-      </slot>
+      <!-- </slot> -->
+    </div>
+    <div class="g-gantt-bar-detail" v-if="expended">
+      <slot />
     </div>
     <template v-if="barConfig.hasHandles">
       <div class="g-gantt-bar-handle-left" />
@@ -37,7 +40,8 @@ import provideConfig from "../provider/provideConfig.js"
 import { BAR_CONTAINER_KEY } from "../provider/symbols"
 
 const props = defineProps<{
-  bar: GanttBarObject
+  bar: GanttBarObject,
+  expended : boolean
 }>()
 const emitBarEvent = provideEmitBarEvent()
 const config = provideConfig()
@@ -127,7 +131,7 @@ const roundPosition = (curYpos : number)=>{
 
 <style>
 .g-gantt-bar {
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   background: cadetblue;
@@ -136,9 +140,9 @@ const roundPosition = (curYpos : number)=>{
 
 .g-gantt-bar-label {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   box-sizing: border-box;
-  padding: 0 14px 0 14px;
+  padding: 10px 14px 10px 14px;
   /* 14px is the width of the handle */
   display: flex;
   justify-content: center;
@@ -174,4 +178,17 @@ const roundPosition = (curYpos : number)=>{
 .g-gantt-bar-label img {
   pointer-events: none;
 }
+
+.g-gantt-bar-detail {
+  width: 100%;
+  /* height: 100%; */
+  box-sizing: border-box;
+  padding: 5px 14px 5px 14px;
+  /* 14px is the width of the handle */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  border-top: 1px solid gray;
+}
+
 </style>

@@ -9,8 +9,10 @@
     </div>
     <div ref="barContainer" class="g-gantt-row-bars-container" v-bind="$attrs">
       <transition-group name="bar-transition" tag="div">
-        <g-gantt-bar v-for="bar in bars" :key="bar.ganttBarConfig.id" :bar="bar">
+        <g-gantt-bar v-for="bar in bars" :key="bar.ganttBarConfig.id" :bar="bar" :expended="expended" >
           <slot name="bar-label" :bar="bar" />
+          <slot :name="bar.ganttBarConfig.id" />
+          <!-- {{ bar.ganttBarConfig.id }} -->
         </g-gantt-bar>
       </transition-group>
     </div>
@@ -28,19 +30,6 @@ import { BAR_CONTAINER_KEY } from "../provider/symbols"
 import CToggleButton from './CToggleButton.vue';
 import { GanttEventBus } from "./EventBus"
 
-// import { getCurrentInstance } from 'vue'
-
-// const app = getCurrentInstance()
-// const bus = app.appContext.config.globalProperties.emitter // app is undefined
-
-// const emitter = app.appContext.config.globalProperties.emitter;
-// emitter.on("custom-expend-rows", (receiveData) => {
-//   // console.log('event bus data', receiveData)
-//   toggle(receiveData.payload)
-// });
-
-
-
 const props = defineProps<{
   label: string
   bars: GanttBarObject[]
@@ -55,6 +44,7 @@ const { rowHeight, colors } = provideConfig()
 const { highlightOnHover } = toRefs(props)
 const isHovering = ref(false)
 const customHeight = ref(rowHeight.value)
+const expended = ref(false)
 const rowStyle = computed(() => {
   return {
     height: `${customHeight.value}px`,
@@ -82,11 +72,15 @@ const toggle = (isOpen: boolean) => {
   // console.log('isOpen', isOpen.value)
   if (isOpen) {
     // console.log('opened')
-    customHeight.value = 90
+
+    // customHeight.value = 90
+    customHeight.value = rowHeight.value * 3
+    expended.value = true
 
   } else {
     // console.log('closed')
     customHeight.value = rowHeight.value
+    expended.value = false
   }
 
 }
@@ -105,6 +99,7 @@ GanttEventBus.on(handleEventBus);
   width: 100%;
   transition: background 0.4s;
   position: relative;
+  overflow: hidden;
 }
 
 .g-gantt-row>.g-gantt-row-bars-container {

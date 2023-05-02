@@ -9,10 +9,12 @@
     @dragend-bar="onDragendBar($event.bar, $event.e, $event.movedBars)"
     @contextmenu-bar="onContextmenuBar($event.bar, $event.e, $event.datetime)"
     @drag-timeline="mouseMoveTimeLine($event.e, $event.timeline)">
-    <!-- <g-gantt-row label="My row 1" :bars="bars1" highlight-on-hover />
-    <g-gantt-row label="My row 2" highlight-on-hover :bars="bars2" /> -->
     <g-gantt-row v-for="location of locations" :label="location.name" :bars="location.bars" :key="location.locationid"
-      :locationid="location.locationid" :row-height="90" />
+      :locationid="location.locationid" :row-height="40">
+      <template v-for="bar of location.bars" v-slot:[`${bar.ganttBarConfig.id}`] :key="bar.ganttBarConfig.id">
+        <p>{{ bar.detail }}</p>
+      </template>
+    </g-gantt-row>
   </g-gantt-chart>
 
   <button type="button" @click="addBar()">Add bar</button>
@@ -21,8 +23,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
-import type { GanttBarObject } from "./types.js"
-import type { GanttLineObject } from "./types.js"
+import type { GanttBarObject, GanttLineObject } from "./types.js"
 
 const chartStart = ref("2023-04-24 13:00")//25.04.2023 12:00
 const chartEnd = ref("2023-04-26 12:00")
@@ -32,10 +33,11 @@ const bars1 = ref<GanttBarObject[]>([
   {
     beginDate: "2023-04-25 14:00",
     endDate: "2023-04-25 18:00",
+    detail : "This is detail string",
     ganttBarConfig: {
       id: "8621987329",
       label: "I'm in a bundle",
-      bundle: "bundle2"
+      bundle: "bundle2",
     }
   }
 ])
@@ -44,6 +46,8 @@ const bars2 = ref([
   {
     beginDate: "2023-04-24 17:00",
     endDate: "2023-04-24 19:00",
+    detail : "This is detail string",
+
     ganttBarConfig: {
       id: "1592311887",
       label: "I'm in a bundle",
@@ -56,6 +60,7 @@ const bars2 = ref([
   {
     beginDate: "2023-04-25 12:00",
     endDate: "2023-04-25 18:00",
+    detail : "This is detail string",
     ganttBarConfig: {
       id: "7716981641",
       label: "Lorem ipsum dolor",
@@ -68,6 +73,7 @@ const bars2 = ref([
   {
     beginDate: "2023-04-25 15:00",
     endDate: "2023-04-25 19:00",
+    detail : "This is detail string",
     ganttBarConfig: {
       id: "9716981641",
       label: "Oh hey",
