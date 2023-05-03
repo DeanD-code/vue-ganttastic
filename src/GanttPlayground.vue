@@ -11,7 +11,11 @@
     @drag-timeline="mouseMoveTimeLine($event.e, $event.timeline)">
     <g-gantt-row v-for="location of locations" :label="location.name" :bars="location.bars" :key="location.locationid"
       :locationid="location.locationid" :row-height="40">
+      <template v-for="bar of location.bars" v-slot:[`simple-${bar.ganttBarConfig.id}`] :key="bar.ganttBarConfig.id">
+        <p>{{ bar.ganttBarConfig.label }}</p>
+      </template>
       <template v-for="bar of location.bars" v-slot:[`${bar.ganttBarConfig.id}`] :key="bar.ganttBarConfig.id">
+        <p>{{ bar.ganttBarConfig.label }}</p>
         <p>{{ bar.detail }}</p>
       </template>
     </g-gantt-row>

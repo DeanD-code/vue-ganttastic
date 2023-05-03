@@ -12,14 +12,15 @@
     @mousedown="onMouseEvent" @click="onMouseEvent" @dblclick="onMouseEvent" @mouseenter="onMouseEvent"
     @mouseleave="onMouseEvent" @contextmenu="onMouseEvent">
     <div class="g-gantt-bar-label">
+      <slot />
       <!-- <slot :bar="bar"> -->
-        <div>
+        <!-- <div>
           {{ barConfig.label || "" }}
-        </div>
+        </div> -->
       <!-- </slot> -->
     </div>
     <div class="g-gantt-bar-detail" v-if="expended">
-      <slot />
+      <!-- <slot /> -->
     </div>
     <template v-if="barConfig.hasHandles">
       <div class="g-gantt-bar-handle-left" />
@@ -144,7 +145,7 @@ const roundPosition = (curYpos : number)=>{
   box-sizing: border-box;
   padding: 10px 14px 10px 14px;
   /* 14px is the width of the handle */
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
 }
@@ -188,7 +189,7 @@ const roundPosition = (curYpos : number)=>{
   /* display: flex; */
   /* justify-content: center; */
   /* align-items: center; */
-  border-top: 1px solid gray;
+  border-top: 0px solid gray;
 }
 
 </style>
