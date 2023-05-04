@@ -100,7 +100,7 @@ GanttEventBus.on(handleEventBus);
   width: 100%;
   transition: background 0.4s;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .g-gantt-row>.g-gantt-row-bars-container {

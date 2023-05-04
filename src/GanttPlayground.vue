@@ -12,11 +12,11 @@
     <g-gantt-row v-for="location of locations" :label="location.name" :bars="location.bars" :key="location.locationid"
       :locationid="location.locationid" :row-height="40">
       <template v-for="bar of location.bars" v-slot:[`simple-${bar.ganttBarConfig.id}`] :key="bar.ganttBarConfig.id">
-        <p>{{ bar.ganttBarConfig.label }}</p>
+        <div>{{ bar.ganttBarConfig.label }}</div>
       </template>
       <template v-for="bar of location.bars" v-slot:[`${bar.ganttBarConfig.id}`] :key="bar.ganttBarConfig.id">
-        <p>{{ bar.ganttBarConfig.label }}</p>
-        <p>{{ bar.detail }}</p>
+        <div>{{ bar.ganttBarConfig.label }}</div>
+        <div>{{ bar.detail }}</div>
       </template>
     </g-gantt-row>
   </g-gantt-chart>
