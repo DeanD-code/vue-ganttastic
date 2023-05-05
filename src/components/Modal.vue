@@ -10,17 +10,19 @@
         <div class="modal-body-row">
           <div class="row-select">
             <div>Location ID: </div>
+            <!-- <div> -->
             <select v-model="inputLocationid">
               <option v-for="location in locations" :key="location.locationid" :value="location.locationid">
                 {{ location.locationid }}
               </option>
             </select>
+            <!-- </div> -->
           </div>
 
           <div class="row-label">
             <div>Location Name: </div>
             <div>
-              <input v-model="inputValue" type="text" :style="`width: 100%`">
+              <input v-model="inputValue" type="text">
             </div>
           </div>
         </div>
@@ -153,7 +155,7 @@ export default {
 }
 
 .modal-container-row {
-  width: 450px;
+  width: 350px;
   margin: 0px auto;
   background-color: #fff;
   border-radius: 5px;
@@ -196,9 +198,9 @@ export default {
 }
 
 .modal-footer-row button {
-  -moz-box-flex: 1;
-  box-flex: 1;
-  -webkit-box-flex: 1;
+  /* -moz-box-flex: 1; */
+  /* box-flex: 1; */
+  /* -webkit-box-flex: 1; */
   display: block;
   color: #999;
   text-align: center;
@@ -241,13 +243,15 @@ export default {
   justify-content: space-between;
   padding: 10px;
 }
+
 .row-select select {
-  width: 50%;
+  width: 60%;
 }
+
 .row-label {
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  border-top: 1px solid sandybrown;
+  /* border-top: 1px solid gray; */
 }
 </style>
