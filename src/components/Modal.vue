@@ -1,13 +1,13 @@
 <template>
-  <div class="modal-mask" v-show="show" transition="modal">
-    <div class="modal-wrapper">
-      <div class="modal-container">
+  <div class="modal-mask-row" v-show="show" transition="modal">
+    <div class="modal-wrapper-row">
+      <div class="modal-container-row">
 
-        <div class="modal-header">
+        <div class="modal-header-row">
           {{ "Row Options" }}
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body-row">
           <div class="row-select">
             <div>Location ID: </div>
             <select v-model="inputLocationid">
@@ -24,7 +24,7 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer-row">
           <button @click="okcallback({
             inputValue,
             inputLocationid,
@@ -135,7 +135,7 @@ export default {
   
   
 <style>
-.modal-mask {
+.modal-mask-row {
   position: fixed;
   z-index: 9998;
   top: 0;
@@ -147,12 +147,12 @@ export default {
   transition: opacity .3s ease;
 }
 
-.modal-wrapper {
+.modal-wrapper-row {
   display: table-cell;
   vertical-align: middle;
 }
 
-.modal-container {
+.modal-container-row {
   width: 450px;
   margin: 0px auto;
   background-color: #fff;
@@ -164,7 +164,7 @@ export default {
   box-sizing: border-box;
 }
 
-.modal-container:after {
+.modal-container-row:after {
   content: '';
   display: block;
   height: 0;
@@ -172,41 +172,43 @@ export default {
   clear: both;
 }
 
-.modal-header {
-  padding: 10px 20px 10px 20px;
+.modal-header-row {
+  padding: 20px 20px 20px 20px;
   text-align: center;
   font-size: 16px;
   border-bottom: 1px solid sandybrown;
 }
 
-.modal-body {
+.modal-body-row {
   padding: 20px;
   text-align: center;
   font-size: 14px;
 }
 
-.modal-footer {
+.modal-footer-row {
   border-top: 1px solid #cdc7c7;
-  display: -webkit-box;
-  display: -moz-box;
-  display: box;
-  /* display: flex; */
+  /* display: -webkit-box; */
+  /* display: -moz-box; */
+  /* display: box; */
+  display: flex;
+  justify-content: center;
   width: 100%;
 }
 
-.modal-footer button {
+.modal-footer-row button {
   -moz-box-flex: 1;
   box-flex: 1;
   -webkit-box-flex: 1;
   display: block;
   color: #999;
   text-align: center;
-  padding: 15px 0px;
+  padding: 15px 15px;
   text-decoration: none;
   border: none;
+  width: 100%;
 }
 
-.modal-footer button:first-child {
+.modal-footer-row button:first-child {
   color: #ff8903;
   border-right: 1px solid #cdc7c7;
 }
@@ -228,8 +230,8 @@ export default {
   opacity: 0;
 }
 
-.modal-enter .modal-container,
-.modal-leave .modal-container {
+.modal-enter .modal-container-row,
+.modal-leave .modal-container-row {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
