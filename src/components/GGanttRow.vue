@@ -3,13 +3,15 @@
     @drop="onDrop($event)" @mouseover="isHovering = true" @mouseleave="isHovering = false">
     <div class="g-gantt-row-label" :style="{ background: colors.primary, color: colors.text }">
       <CToggleButton :custom-handle="toggle" />
-      <slot name="label">
-        {{ label }}
-      </slot>
+      <div @click="$event => onLabelClick($event, rowid + 1, label)" class="labelButton">
+        <slot name="label">
+          {{ label }}
+        </slot>
+      </div>
     </div>
     <div ref="barContainer" class="g-gantt-row-bars-container" v-bind="$attrs">
       <transition-group name="bar-transition" tag="div">
-        <g-gantt-bar v-for="bar in bars" :key="bar.ganttBarConfig.id" :bar="bar" :expended="expended" >
+        <g-gantt-bar v-for="bar in bars" :key="bar.ganttBarConfig.id" :bar="bar" :expended="expended">
           <!-- <slot :name="`simple-${bar.ganttBarConfig.id}`" /> -->
           <slot :name="`simple-${bar.ganttBarConfig.id}`" v-if="!expended" />
           <slot :name="`${bar.ganttBarConfig.id}`" v-if="expended" />
@@ -21,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, toRefs, computed, type StyleValue, provide} from "vue"
+import { ref, type Ref, toRefs, computed, type StyleValue, provide } from "vue"
 
 import useTimePositionMapping from "../composables/useTimePositionMapping.js"
 import provideConfig from "../provider/provideConfig.js"
@@ -31,10 +33,13 @@ import { BAR_CONTAINER_KEY } from "../provider/symbols"
 import CToggleButton from './CToggleButton.vue';
 import { GanttEventBus } from "./EventBus"
 
+
 const props = defineProps<{
-  label: string
+  label: string,
+  locationid: string,
   bars: GanttBarObject[]
-  highlightOnHover?: boolean
+  highlightOnHover?: boolean,
+  rowid: number
 }>()
 
 const emit = defineEmits<{
@@ -85,10 +90,17 @@ const toggle = (isOpen: boolean) => {
   }
 
 }
+const onLabelClick = (e: Event, rowid: any, label : any) => {
+  e.preventDefault()
+  console.log('label event', e, rowid, label)
+  GanttEventBus.emit('click-row-label', {rowid, label})
+}
 
-const handleEventBus = (event: any, payload: boolean)=>{
-  console.log('event bus data', payload)
-  toggle(payload)
+const handleEventBus = (event: any, payload: boolean) => {
+  if(event == "custom-expend-rows"){
+    console.log('custom-expend-rows', payload)
+    toggle(payload)
+  }
 }
 
 GanttEventBus.on(handleEventBus);
@@ -136,5 +148,9 @@ GanttEventBus.on(handleEventBus);
 .bar-transition-leave-to {
   transform: scale(0.8);
   opacity: 0;
+}
+
+.labelButton {
+  cursor: pointer;
 }
 </style>

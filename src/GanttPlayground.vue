@@ -1,6 +1,7 @@
 <template>
   <g-gantt-chart :chart-start="chartStart" :chart-end="chartEnd" precision="hour" grid width="100%" bar-start="beginDate"
     bar-end="endDate" :date-format="format" :lines="lines_datetime" :rowHeight="40" :verticalMove="true"
+    :row-count="locations.length"
     @click-bar="onClickBar($event.bar, $event.e, $event.datetime)"
     @mousedown-bar="onMousedownBar($event.bar, $event.e, $event.datetime)"
     @dblclick-bar="onMouseupBar($event.bar, $event.e, $event.datetime)"
@@ -8,9 +9,10 @@
     @dragstart-bar="onDragstartBar($event.bar, $event.e)" @drag-bar="onDragBar($event.bar, $event.e)"
     @dragend-bar="onDragendBar($event.bar, $event.e, $event.movedBars)"
     @contextmenu-bar="onContextmenuBar($event.bar, $event.e, $event.datetime)"
-    @drag-timeline="mouseMoveTimeLine($event.e, $event.timeline)">
-    <g-gantt-row v-for="location of locations" :label="location.name" :bars="location.bars" :key="location.locationid"
-      :locationid="location.locationid" :row-height="40">
+    @drag-timeline="mouseMoveTimeLine($event.e, $event.timeline)"
+    @custom-event="handleCustomEvent($event.type, $event.payload)" >
+    <g-gantt-row v-for="(location, index) of locations" :label="location.name" :bars="location.bars" :key="location.locationid"
+      :locationid="location.locationid.toString()" :row-height="40" :rowid="index" >
       <template v-for="bar of location.bars" v-slot:[`simple-${bar.ganttBarConfig.id}`] :key="bar.ganttBarConfig.id">
         <div>{{ bar.ganttBarConfig.label }}</div>
       </template>
@@ -207,11 +209,24 @@ const mouseMoveTimeLine = (e: MouseEvent, timeline?: string) => {
   sDate.setTime(startDate.getTime() - parseInt(diffTime) * 60000);
   eDate.setTime(endDate.getTime() - parseInt(diffTime) * 60000);
 
-  // console.log('iso dates', sDate.toISOString(), eDate.toISOString());
-  // console.log('standard dates', sDate.toString(), eDate.toString());
-  // console.log('changed dates', convertDate2FormatString(sDate), convertDate2FormatString(eDate));
   chartStart.value = convertDate2FormatString(sDate);
   chartEnd.value = convertDate2FormatString(eDate);
+}
+const handleCustomEvent = (type: string, payload: any) => {
+  console.log('type and payload', type, payload)
+  switch(type){
+    case 'update-row':
+      console.log('before change', locations.value)
+      locations.value[payload.locationid - 1].name = payload.inputValue
+      // locations.value.filter(location=>location.locationid == payload.locationid)[0].name = payload.inputValue;
+      // locations.value.map(location => {
+      //     if(location.locationid == payload.locationid){
+      //         location.name = payload.inputValue
+      //         location.locationid = payload.inputLocationid
+      //     }
+      // })
+    break
+  }
 }
 const convertStringToDate = (timestring: string) => {
 

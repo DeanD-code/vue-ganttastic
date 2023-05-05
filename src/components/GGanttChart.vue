@@ -9,15 +9,9 @@
       <template #timeunit="{ label, value, date }">
         <!-- expose timeunit slot of g-gantt-timeaxis-->
         <slot name="timeunit" :label="label" :value="value" :date="date" />
-
-        <!-- <div v-on:click="(event)=>handleMouseMove(event)">
-          handler
-        </div> -->
       </template>
     </g-gantt-timeaxis>
-
     <!-- <g-gantt-line v-if="!hideTimeaxis" left="30" /> -->
-
     <g-gantt-grid v-if="grid" :highlighted-units="highlightedUnits" />
     <g-gantt-line v-if="!hideTimeaxis" :lines="lines" :chart-start-date="chartStart" :chart-end-date="chartEnd"
       :highlighted-units="highlightedUnits" />
@@ -32,6 +26,13 @@
         <slot name="bar-tooltip" :bar="tooltipBar" />
       </template>
     </g-gantt-bar-tooltip>
+    <modal :show='showDialog' oktext="Save" canceltext="Cancel" showok showcancel 
+      :okcallback="changeLabel"
+      :cancelcallback="()=>showDialog = false"
+      :locationid="currentLocationId"
+      :label="currentLabel"
+      :rowCount="rowCount"
+    />
   </div>
 </template>
 
@@ -59,7 +60,10 @@ import { DEFAULT_DATE_FORMAT } from "../composables/useDayjsHelper"
 import { useElementSize } from "@vueuse/core"
 import CToggleButton from './CToggleButton.vue';
 // import mitt from 'mitt';
-import { GanttEventBus} from "./EventBus"
+import { GanttEventBus } from "./EventBus"
+// import EditModal from './EditModal.vue'
+// import ModalDialog from "@/components/ModalDialog.vue";
+import Modal from './Modal.vue'
 
 export interface GGanttChartProps {
   chartStart: string | Date
@@ -78,7 +82,8 @@ export interface GGanttChartProps {
   highlightedUnits?: number[]
   font?: string
   lines: GanttLineObject[]
-  verticalMove?: boolean
+  verticalMove?: boolean,
+  rowCount: number
 }
 
 export type GGanttChartConfig = ToRefs<Required<GGanttChartProps>> & {
@@ -101,7 +106,7 @@ const props = withDefaults(defineProps<GGanttChartProps>(), {
   rowHeight: 40,
   highlightedUnits: () => [],
   font: "inherit",
-  verticalMove : false
+  verticalMove: false
 })
 
 const emit = defineEmits<{
@@ -131,6 +136,7 @@ const emit = defineEmits<{
   ): void
   (e: "drag-timeline", value: { e: MouseEvent; timeline?: string | Date }): void
   (e: "custom-expend-rows", value: { type: string; payload: boolean }): void
+  (e: "custom-event", value: { type: string; payload: any }): void
 }>()
 
 const { width, font, colorScheme } = toRefs(props)
@@ -167,6 +173,10 @@ const getChartRows = () => {
   })
   return allBars
 }
+
+const showDialog = ref(false);
+const currentLocationId = ref('current location id')
+const currentLabel = ref('current label')
 
 const showTooltip = ref(false)
 const isDragging = ref(false)
@@ -281,13 +291,32 @@ const toggle = (isOpen: boolean) => {
   }
 }
 
-const handleYmove = (yClient : number)=>{
+const handleYmove = (yClient: number) => {
 
   const parentNode = document.querySelector(".g-gantt-rows-container");
   // const firstChild = parentNode.childNodes[0];
-  console.log('yClient',yClient, parentNode); // this will output the <p> element
+  console.log('yClient', yClient, parentNode); // this will output the <p> element
 }
 
+const handleEventBus = (event: any, payload: any) => {
+  if (event == "click-row-label") {
+    console.log('event label change', payload)
+    // $refs.dialog.show = false
+    currentLocationId.value = payload.rowid
+    currentLabel.value = payload.label
+    
+    showDialog.value = true
+    console.log('showDialog', showDialog.value)  
+  }
+}
+
+GanttEventBus.on(handleEventBus);
+
+const changeLabel = (payload: any) => {
+  showDialog.value = false
+  console.log('updated row', payload)
+  emit('custom-event', { type : "update-row", payload : payload})
+}
 
 </script>
 
