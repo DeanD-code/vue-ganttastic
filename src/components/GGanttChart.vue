@@ -26,13 +26,9 @@
         <slot name="bar-tooltip" :bar="tooltipBar" />
       </template>
     </g-gantt-bar-tooltip>
-    <modal :show='showDialog' oktext="Save" canceltext="Cancel" showok showcancel 
-      :okcallback="changeLabel"
-      :cancelcallback="()=>showDialog = false"
-      :locationid="currentLocationId"
-      :label="currentLabel"
-      :rowCount="rowCount"
-    />
+    <modal :show='showDialog' oktext="Save" canceltext="Cancel" showok showcancel :okcallback="changeLabel"
+      :cancelcallback="() => showDialog = false" :locationid="currentLocationId" :label="currentLabel"
+      :rowCount="rowCount" />
   </div>
 </template>
 
@@ -299,14 +295,16 @@ const handleYmove = (yClient: number) => {
 }
 
 const handleEventBus = (event: any, payload: any) => {
-  if (event == "click-row-label") {
-    console.log('event label change', payload)
-    // $refs.dialog.show = false
-    currentLocationId.value = payload.rowid
-    currentLabel.value = payload.label
-    
-    showDialog.value = true
-    console.log('showDialog', showDialog.value)  
+  // console.log('event label change', payload)
+  switch (event) {
+    case "click-row-label":
+      currentLocationId.value = payload.rowid
+      currentLabel.value = payload.label
+      showDialog.value = true
+      break;
+    case "drop-row-label":
+      emit('custom-event', { type: "update-row", payload: payload })
+      break;
   }
 }
 
@@ -315,7 +313,7 @@ GanttEventBus.on(handleEventBus);
 const changeLabel = (payload: any) => {
   showDialog.value = false
   console.log('updated row', payload)
-  emit('custom-event', { type : "update-row", payload : payload})
+  emit('custom-event', { type: "update-row", payload: payload })
 }
 
 </script>

@@ -9,19 +9,19 @@
 
         <div class="modal-body-row">
           <div class="row-select">
-            <div>Location ID: </div>
-            <!-- <div> -->
-            <select v-model="inputLocationid">
-              <option v-for="location in locations" :key="location.locationid" :value="location.locationid">
-                {{ location.locationid }}
-              </option>
-            </select>
-            <!-- </div> -->
+            <div class="flex-cell">Location ID: </div>
+            <div class="flex-cell">
+              <select v-model="inputLocationid">
+                <option v-for="location in locations" :key="location.locationid" :value="location.locationid">
+                  {{ location.locationid }}
+                </option>
+              </select>
+            </div>
           </div>
 
           <div class="row-label">
-            <div>Location Name: </div>
-            <div>
+            <div class="flex-cell">Location Name: </div>
+            <div class="flex-cell">
               <input v-model="inputValue" type="text">
             </div>
           </div>
@@ -127,7 +127,7 @@ export default {
         for (let i = 1; i <= this.rowCount; i++) {
           arr.push({ locationid: i.toString() })
         }
-        console.log('computed', arr)
+        // console.log('computed', arr)
         return arr;
       }
     }
@@ -183,24 +183,17 @@ export default {
 
 .modal-body-row {
   padding: 20px;
-  text-align: center;
   font-size: 14px;
 }
 
 .modal-footer-row {
   border-top: 1px solid #cdc7c7;
-  /* display: -webkit-box; */
-  /* display: -moz-box; */
-  /* display: box; */
   display: flex;
   justify-content: center;
   width: 100%;
 }
 
 .modal-footer-row button {
-  /* -moz-box-flex: 1; */
-  /* box-flex: 1; */
-  /* -webkit-box-flex: 1; */
   display: block;
   color: #999;
   text-align: center;
@@ -245,13 +238,20 @@ export default {
 }
 
 .row-select select {
-  width: 60%;
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 
 .row-label {
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  /* border-top: 1px solid gray; */
+}
+.row-label input {
+  text-align: right;
+}
+.flex-cell {
+  flex-grow: 1
 }
 </style>

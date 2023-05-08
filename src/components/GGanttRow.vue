@@ -1,9 +1,10 @@
 <template>
   <div class="g-gantt-row" :style="rowStyle" @dragover.prevent="isHovering = true" @dragleave="isHovering = false"
-    @drop="onDrop($event)" @mouseover="isHovering = true" @mouseleave="isHovering = false">
+    @drop="onDrop($event, rowid + 1)" @mouseover="isHovering = true" @mouseleave="isHovering = false">
     <div class="g-gantt-row-label" :style="{ background: colors.primary, color: colors.text }">
       <CToggleButton :custom-handle="toggle" />
-      <div @click="$event => onLabelClick($event, rowid + 1, label)" class="labelButton">
+      <div @click="$event => onLabelClick($event, rowid + 1, label)" class="labelButton" draggable="true"
+        @dragstart="handleDragStart($event, rowid + 1, label)">
         <slot name="label">
           {{ label }}
         </slot>
@@ -63,7 +64,20 @@ const barContainer: Ref<HTMLElement | null> = ref(null)
 
 provide(BAR_CONTAINER_KEY, barContainer)
 
-const onDrop = (e: MouseEvent) => {
+const onDrop = (e: any, rowIdNew: any) => {//MouseEvent
+  // console.log('droped', e);
+  const dataTransfer = e.dataTransfer.getData("text/plain")
+  const { rowid, label } = JSON.parse(dataTransfer);
+  if (rowid && label) {
+    GanttEventBus.emit('drop-row-label', {
+      locationid: rowid,
+      label: label,
+      inputLocationid: rowIdNew,
+      inputValue: label,
+    })
+    return
+  }
+  console.log("rowid", rowid, label)
   const container = barContainer.value?.getBoundingClientRect()
   if (!container) {
     console.error("Vue-Ganttastic: failed to find bar container element for row.")
@@ -72,6 +86,9 @@ const onDrop = (e: MouseEvent) => {
   const xPos = e.clientX - container.left
   const datetime = mapPositionToTime(xPos)
   emit("drop", { e, datetime })
+
+  // GanttEventBus.emit('click-row-label', { rowid, label })
+  //
 }
 
 const toggle = (isOpen: boolean) => {
@@ -90,14 +107,19 @@ const toggle = (isOpen: boolean) => {
   }
 
 }
-const onLabelClick = (e: Event, rowid: any, label : any) => {
+const onLabelClick = (e: Event, rowid: any, label: any) => {
   e.preventDefault()
   console.log('label event', e, rowid, label)
-  GanttEventBus.emit('click-row-label', {rowid, label})
+  GanttEventBus.emit('click-row-label', { rowid, label })
 }
 
+const handleDragStart = (e: any, rowid: any, label: any) => {
+  let jsonstring = JSON.stringify({ rowid, label });
+  e.dataTransfer.setData("text/plain", jsonstring);
+  // console.log('drop started');
+}
 const handleEventBus = (event: any, payload: boolean) => {
-  if(event == "custom-expend-rows"){
+  if (event == "custom-expend-rows") {
     console.log('custom-expend-rows', payload)
     toggle(payload)
   }
