@@ -31,7 +31,6 @@ export default function useTimePositionMapping(config: GGanttChartConfig = provi
     return diffFromStart.toString()
   }
   const mapPositionToRow = (yPos: number) => {
-    console.log('yPos->rowID', yPos);
     const timeaxisContainer = document.querySelector(".g-timeaxis")!;
     let TotalHeight = (timeaxisContainer as HTMLElement).offsetHeight;
     let locationid = "-1";
@@ -42,12 +41,13 @@ export default function useTimePositionMapping(config: GGanttChartConfig = provi
     ).forEach((ganttRow) => {
       // console.log((ganttRow as HTMLElement).offsetHeight)
       const rect = ganttRow.getBoundingClientRect();
-      if(yPos >= rect.top && yPos < rect.bottom){
+      if (yPos >= rect.top && yPos < rect.bottom) {
         locationid = ganttRow.getAttribute('locationid')!;
         fixedTop = rect.top;
       }
     })
 
+    console.log('yPos->rowID', yPos, locationid);
     return locationid
   }
   return {

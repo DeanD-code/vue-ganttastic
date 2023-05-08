@@ -1,5 +1,5 @@
 <template>
-  <div class="g-gantt-row" :style="rowStyle" @dragover.prevent="isHovering = true" @dragleave="isHovering = false"
+  <div class="g-gantt-row" :style="rowStyle" :locationid="`${locationid}`" @dragover.prevent="isHovering = true" @dragleave="isHovering = false"
     @drop="onDrop($event, rowid + 1)" @mouseover="isHovering = true" @mouseleave="isHovering = false">
     <div class="g-gantt-row-label" :style="{ background: colors.primary, color: colors.text }">
       <CToggleButton :custom-handle="toggle" />
@@ -69,6 +69,7 @@ const onDrop = (e: any, rowIdNew: any) => {//MouseEvent
   const dataTransfer = e.dataTransfer.getData("text/plain")
   const { rowid, label } = JSON.parse(dataTransfer);
   if (rowid && label) {
+    console.log("rowid", rowid, label)
     GanttEventBus.emit('drop-row-label', {
       locationid: rowid,
       label: label,
@@ -77,7 +78,7 @@ const onDrop = (e: any, rowIdNew: any) => {//MouseEvent
     })
     return
   }
-  console.log("rowid", rowid, label)
+  
   const container = barContainer.value?.getBoundingClientRect()
   if (!container) {
     console.error("Vue-Ganttastic: failed to find bar container element for row.")

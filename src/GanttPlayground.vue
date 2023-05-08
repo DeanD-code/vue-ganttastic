@@ -12,7 +12,7 @@
     @drag-timeline="mouseMoveTimeLine($event.e, $event.timeline)"
     @custom-event="handleCustomEvent($event.type, $event.payload)" >
     <g-gantt-row v-for="(location, index) of locations" :label="location.name" :bars="location.bars" :key="location.locationid"
-      :locationid="location.locationid.toString()" :row-height="40" :rowid="index" >
+      :locationid="location.locationid" :row-height="40" :rowid="index" >
       <template v-for="bar of location.bars" v-slot:[`simple-${bar.ganttBarConfig.id}`] :key="bar.ganttBarConfig.id">
         <div>{{ bar.ganttBarConfig.label }}</div>
       </template>
