@@ -66,6 +66,8 @@ provide(BAR_CONTAINER_KEY, barContainer)
 
 const onDrop = (e: any, rowIdNew: any) => {//MouseEvent
   // console.log('droped', e);
+  e.preventDefault();
+
   const dataTransfer = e.dataTransfer.getData("text/plain")
   const { rowid, label } = JSON.parse(dataTransfer);
   if (rowid && label) {
