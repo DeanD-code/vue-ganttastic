@@ -1,6 +1,7 @@
 <template>
   <div class="g-gantt-row" :style="rowStyle" :locationid="`${locationid}`" @dragover.prevent="isHovering = true" @dragleave="isHovering = false"
-    @drop="onDrop($event, rowid + 1)" @mouseover="isHovering = true" @mouseleave="isHovering = false">
+    @drop="onDrop($event, rowid + 1)" 
+    @mouseover="isHovering = true" @mouseleave="isHovering = false"  >
     <div class="g-gantt-row-label" :style="{ background: colors.primary, color: colors.text }">
       <CToggleButton :custom-handle="toggle" />
       <div @click="$event => onLabelClick($event, rowid + 1, label)" class="labelButton" draggable="true"
@@ -20,11 +21,12 @@
         </g-gantt-bar>
       </transition-group>
     </div>
+    <div class="g-gantt-row-handle-bottom"  @mousedown="onMouseEvent" @mousemove="onMouseEvent" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, toRefs, computed, type StyleValue, provide } from "vue"
+import { ref, type Ref, toRefs, computed, type StyleValue, provide, inject } from "vue"
 
 import useTimePositionMapping from "../composables/useTimePositionMapping.js"
 import provideConfig from "../provider/provideConfig.js"
@@ -52,6 +54,7 @@ const { highlightOnHover } = toRefs(props)
 const isHovering = ref(false)
 const customHeight = ref(rowHeight.value)
 const expended = ref(false)
+const clickedRowBottom = ref(false)
 const rowStyle = computed(() => {
   return {
     height: `${customHeight.value}px`,
@@ -63,6 +66,8 @@ const { mapPositionToTime } = useTimePositionMapping()
 const barContainer: Ref<HTMLElement | null> = ref(null)
 
 provide(BAR_CONTAINER_KEY, barContainer)
+
+const containerRect = ref(barContainer.value?.getBoundingClientRect())
 
 const onDrop = (e: any, rowIdNew: any) => {//MouseEvent
   // console.log('droped', e);
@@ -89,16 +94,11 @@ const onDrop = (e: any, rowIdNew: any) => {//MouseEvent
   const xPos = e.clientX - container.left
   const datetime = mapPositionToTime(xPos)
   emit("drop", { e, datetime })
-
-  // GanttEventBus.emit('click-row-label', { rowid, label })
-  //
 }
 
 const toggle = (isOpen: boolean) => {
   // console.log('isOpen', isOpen.value)
   if (isOpen) {
-    // console.log('opened')
-
     // customHeight.value = 90
     customHeight.value = rowHeight.value * 3
     expended.value = true
@@ -130,6 +130,57 @@ const handleEventBus = (event: any, payload: boolean) => {
 
 GanttEventBus.on(handleEventBus);
 
+function firstMousemoveCallback(e: MouseEvent) {
+  
+  console.log('custom height', customHeight)
+}
+
+const prepareForDrag = () => {
+  clickedRowBottom.value = true
+  containerRect.value = barContainer.value?.getBoundingClientRect()
+  if (!containerRect.value) {
+    console.error("Vue-Ganttastic: failed to find bar container element for row.")
+    return
+  }
+  console.log('custom height', customHeight, containerRect.value)
+
+  window.addEventListener("mousemove", firstMousemoveCallback, {
+    once: false
+  }) // on first mousemove event
+  window.addEventListener(
+    "mouseup",
+    () => {
+      window.removeEventListener("mousemove", firstMousemoveCallback)
+      clickedRowBottom.value = false;
+      console.log('canceled bottom click')
+    },
+    { once: true }
+  )
+}
+const onMouseEvent = (e: MouseEvent) => {
+  e.preventDefault()
+  // console.log('mouse event', e.type)
+  if (e.type === "mousedown") {
+    prepareForDrag()
+    return
+  }
+  if(e.type === "mousemove") {
+    if(!clickedRowBottom.value){
+      // console.log('clickedRowBottom', clickedRowBottom.value)
+      return
+    }
+    console.log('bar Container')
+    const container = containerRect.value
+    if (!container) {
+      console.error("Vue-Ganttastic: failed to find bar container element for row.")
+      return
+    }
+    customHeight.value = Math.max(e.clientY - container.top, rowHeight.value)
+    // console.log('custom height', customHeight, containerRect)
+
+    return
+  }
+}
 </script>
 
 <style>
@@ -138,6 +189,7 @@ GanttEventBus.on(handleEventBus);
   transition: background 0.4s;
   position: relative;
   /* overflow: hidden; */
+  padding-bottom: 10px;
 }
 
 .g-gantt-row>.g-gantt-row-bars-container {
@@ -178,4 +230,17 @@ GanttEventBus.on(handleEventBus);
 .labelButton {
   cursor: pointer;
 }
+
+.g-gantt-row-handle-bottom {
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  background: white;
+  opacity: 0.7;
+  border-radius: 0px;
+  cursor: ns-resize;
+  bottom: 0px;
+  padding: 5px;
+}
+
 </style>
