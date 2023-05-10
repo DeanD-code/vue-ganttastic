@@ -1,7 +1,7 @@
 <template>
-  <div class="g-gantt-row" :style="rowStyle" :locationid="`${locationid}`" @dragover.prevent="isHovering = true" @dragleave="isHovering = false"
-    @drop="onDrop($event, rowid + 1)" 
-    @mouseover="isHovering = true" @mouseleave="isHovering = false"  >
+  <div class="g-gantt-row" :style="rowStyle" :locationid="`${locationid}`" @dragover.prevent="isHovering = true"
+    @dragleave="isHovering = false" @drop="onDrop($event, rowid + 1)" @mouseover="isHovering = true"
+    @mouseleave="isHovering = false">
     <div class="g-gantt-row-label" :style="{ background: colors.primary, color: colors.text }">
       <CToggleButton :custom-handle="toggle" />
       <div @click="$event => onLabelClick($event, rowid + 1, label)" class="labelButton" draggable="true"
@@ -21,7 +21,7 @@
         </g-gantt-bar>
       </transition-group>
     </div>
-    <div class="g-gantt-row-handle-bottom"  @mousedown="onMouseEvent" @mousemove="onMouseEvent" />
+    <div class="g-gantt-row-handle-bottom" @mousedown="onMouseEvent" @mousemove="onMouseEvent" />
   </div>
 </template>
 
@@ -85,7 +85,7 @@ const onDrop = (e: any, rowIdNew: any) => {//MouseEvent
     })
     return
   }
-  
+
   const container = barContainer.value?.getBoundingClientRect()
   if (!container) {
     console.error("Vue-Ganttastic: failed to find bar container element for row.")
@@ -131,8 +131,19 @@ const handleEventBus = (event: any, payload: boolean) => {
 GanttEventBus.on(handleEventBus);
 
 function firstMousemoveCallback(e: MouseEvent) {
-  
-  console.log('custom height', customHeight)
+  if (!clickedRowBottom.value) {
+    // console.log('clickedRowBottom', clickedRowBottom.value)
+    return
+  }
+  // console.log('bar Container')
+  const container = containerRect.value
+  if (!container) {
+    console.error("Vue-Ganttastic: failed to find bar container element for row.")
+    return
+  }
+  customHeight.value = Math.max(e.clientY - container.top, rowHeight.value)
+  // console.log('custom height', customHeight, containerRect)
+  console.log('custom height', customHeight.value)
 }
 
 const prepareForDrag = () => {
@@ -164,22 +175,22 @@ const onMouseEvent = (e: MouseEvent) => {
     prepareForDrag()
     return
   }
-  if(e.type === "mousemove") {
-    if(!clickedRowBottom.value){
-      // console.log('clickedRowBottom', clickedRowBottom.value)
-      return
-    }
-    console.log('bar Container')
-    const container = containerRect.value
-    if (!container) {
-      console.error("Vue-Ganttastic: failed to find bar container element for row.")
-      return
-    }
-    customHeight.value = Math.max(e.clientY - container.top, rowHeight.value)
-    // console.log('custom height', customHeight, containerRect)
+  // if(e.type === "mousemove") {
+  //   if(!clickedRowBottom.value){
+  //     // console.log('clickedRowBottom', clickedRowBottom.value)
+  //     return
+  //   }
+  //   console.log('bar Container')
+  //   const container = containerRect.value
+  //   if (!container) {
+  //     console.error("Vue-Ganttastic: failed to find bar container element for row.")
+  //     return
+  //   }
+  //   customHeight.value = Math.max(e.clientY - container.top, rowHeight.value)
+  //   // console.log('custom height', customHeight, containerRect)
 
-    return
-  }
+  //   return
+  // }
 }
 </script>
 
@@ -234,13 +245,12 @@ const onMouseEvent = (e: MouseEvent) => {
 .g-gantt-row-handle-bottom {
   position: absolute;
   width: 100%;
-  height: 5px;
+  height: 10px;
   background: white;
   opacity: 0.7;
   border-radius: 0px;
   cursor: ns-resize;
   bottom: 0px;
-  padding: 5px;
+  padding-bottom: 5px;
 }
-
 </style>
