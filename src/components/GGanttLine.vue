@@ -65,7 +65,7 @@ const calcLeft = (curTime: string, startDateTime: string | Date, endDateTime: st
 <style>
 .g-line-container {
   position: absolute;
-  z-index: 3;
+  /* z-index: 3; */
   top: 0;
   left: 0%;
   width: 100%;
@@ -76,6 +76,7 @@ const calcLeft = (curTime: string, startDateTime: string | Date, endDateTime: st
 
 .g-line-style {
   position: absolute;
+  z-index: 3;
   left: 150px;
   width: 10px;
   height: 100%;
