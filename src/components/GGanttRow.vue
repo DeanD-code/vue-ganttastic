@@ -143,7 +143,7 @@ function firstMousemoveCallback(e: MouseEvent) {
   }
   customHeight.value = Math.max(e.clientY - container.top, rowHeight.value)
   // console.log('custom height', customHeight, containerRect)
-  console.log('custom height', customHeight.value)
+  // console.log('custom height', customHeight.value)
 }
 
 const prepareForDrag = () => {
@@ -153,7 +153,7 @@ const prepareForDrag = () => {
     console.error("Vue-Ganttastic: failed to find bar container element for row.")
     return
   }
-  console.log('custom height', customHeight, containerRect.value)
+  // console.log('custom height', customHeight, containerRect.value)
 
   window.addEventListener("mousemove", firstMousemoveCallback, {
     once: false

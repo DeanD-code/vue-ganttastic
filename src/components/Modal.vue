@@ -8,9 +8,9 @@
         </div>
 
         <div class="modal-body-row">
-          <div class="row-select">
-            <div class="flex-cell">Location ID: </div>
-            <div class="flex-cell">
+          <div class="row-select row">
+            <div class="flex-cell col-6">Location ID: </div>
+            <div class="flex-cell col-6">
               <select v-model="inputLocationid">
                 <option v-for="location in locations" :key="location.locationid" :value="location.locationid">
                   {{ location.locationid }}
@@ -19,9 +19,9 @@
             </div>
           </div>
 
-          <div class="row-label">
-            <div class="flex-cell">Location Name: </div>
-            <div class="flex-cell">
+          <div class="row-label row">
+            <div class="flex-cell col-6">Location Name: </div>
+            <div class="flex-cell col-6">
               <input v-model="inputValue" type="text">
             </div>
           </div>
@@ -234,7 +234,7 @@ export default {
 .row-select {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 10px 0px;
 }
 
 .row-select select {
@@ -246,12 +246,14 @@ export default {
 .row-label {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 10px 0px;
 }
 .row-label input {
   text-align: right;
+  width: 95%;
 }
 .flex-cell {
-  flex-grow: 1
+  flex-grow: 1;
+  width: 50%;
 }
 </style>
