@@ -112,7 +112,7 @@ const toggle = (isOpen: boolean) => {
 }
 const onLabelClick = (e: Event, rowid: any, label: any) => {
   e.preventDefault()
-  console.log('label event', e, rowid, label)
+  // console.log('label event', e, rowid, label)
   GanttEventBus.emit('click-row-label', { rowid, label })
 }
 

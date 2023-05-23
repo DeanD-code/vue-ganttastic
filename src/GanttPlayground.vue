@@ -25,6 +25,29 @@
 
   <button type="button" @click="addBar()">Add bar</button>
   <button type="button" @click="deleteBar()">Delete bar</button>
+  <Dialog v-model:visible="parkingModalVisible" :modal="true" header="Change Bay" :style="{ width: '27.5em' }">
+    <div class="row text-center">
+      <div class="col-12">
+        <div class="row mb-3">
+          <div class="col-12 text-center">
+            <select v-model="loadinglocationid">
+              <option v-for="location in locations" :key="location.locationid" :value="location.locationid">
+                {{ location.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-primary w-md mt-2" @click="onUpdateLocation">
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -34,6 +57,8 @@ import type { GanttBarObject, GanttLineObject } from "./types.js"
 const chartStart = ref("2023-04-24 13:00")//25.04.2023 12:00
 const chartEnd = ref("2023-04-26 12:00")
 const format = ref("YYYY-MM-DD HH:mm")
+const parkingModalVisible = ref(false)
+const loadinglocationid = ref(0)
 
 const bars1 = ref<GanttBarObject[]>([
   {
@@ -215,6 +240,10 @@ const mouseMoveTimeLine = (e: MouseEvent, timeline?: string) => {
 const handleCustomEvent = (type: string, payload: any) => {
   console.log('type and payload', type, payload)
   switch(type){
+    case "row-label-clicked":
+      console.log('row-label-clicked', payload)
+      parkingModalVisible.value = true
+      break
     case 'update-row':
       console.log('before change', locations.value)
       locations.value[payload.locationid - 1].name = payload.inputValue
@@ -225,7 +254,7 @@ const handleCustomEvent = (type: string, payload: any) => {
       //         location.locationid = payload.inputLocationid
       //     }
       // })
-    break
+      break
   }
 }
 const convertStringToDate = (timestring: string) => {
@@ -246,5 +275,9 @@ const convertDate2FormatString = (datetime: Date) => {
     + ':' + ('0' + datetime.getMinutes()).slice(-2);
   console.log("output date", formatDate);
   return formatDate
+}
+const onUpdateLocation = (data: any)=> {
+  console.log('update label function', data);
+  parkingModalVisible.value = false
 }
 </script>

@@ -26,9 +26,9 @@
         <slot name="bar-tooltip" :bar="tooltipBar" />
       </template>
     </g-gantt-bar-tooltip>
-    <modal :show='showDialog' oktext="Save" canceltext="Cancel" showok showcancel :okcallback="changeLabel"
+    <!-- <modal :show='showDialog' oktext="Save" canceltext="Cancel" showok showcancel :okcallback="changeLabel"
       :cancelcallback="() => showDialog = false" :locationid="currentLocationId" :label="currentLabel"
-      :rowCount="rowCount" />
+      :rowCount="rowCount" /> -->
   </div>
 </template>
 
@@ -300,7 +300,8 @@ const handleEventBus = (event: any, payload: any) => {
     case "click-row-label":
       currentLocationId.value = payload.rowid
       currentLabel.value = payload.label
-      showDialog.value = true
+      // showDialog.value = true
+      emit('custom-event', { type: "row-label-clicked", payload: payload })
       break;
     case "drop-row-label":
       emit('custom-event', { type: "update-row", payload: payload })
