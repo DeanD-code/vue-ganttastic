@@ -184,7 +184,7 @@ const roundPosition = (curYpos : number)=>{
   width: 100%;
   /* height: 100%; */
   box-sizing: border-box;
-  padding: 5px 14px 5px 14px;
+  padding: 0 14px 0 14px;
   /* 14px is the width of the handle */
   /* display: flex; */
   /* justify-content: center; */
