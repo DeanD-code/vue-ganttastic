@@ -5,7 +5,7 @@
       top: `${nTop}px`,
       left: `${xStart}px`,
       width: `${xEnd - xStart}px`,
-      height: expended ? `${rowHeight * 3.0}px` : `${rowHeight * 1.0}px`,/** `${rowHeight * 0.8}px`*/
+      height: expended ? `${rowHeight * 2.9}px` : `${rowHeight * 0.9}px`,/** `${rowHeight * 0.8}px`*/
       zIndex: isDragging ? 3 : 2
     }"
     draggable="true"
