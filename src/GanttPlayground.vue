@@ -15,6 +15,8 @@
       :locationid="location.locationid" :row-height="40" :rowid="index" >
       <template v-for="bar of location.bars" v-slot:[`simple-${bar.ganttBarConfig.id}`] :key="bar.ganttBarConfig.id">
         <div>{{ bar.ganttBarConfig.label }}</div>
+        <div>{{ bar.ganttBarConfig.label }}</div>
+        <div>{{ bar.ganttBarConfig.label }}</div>
       </template>
       <template v-for="bar of location.bars" v-slot:[`${bar.ganttBarConfig.id}`] :key="bar.ganttBarConfig.id">
         <div>{{ bar.ganttBarConfig.label }}</div>
