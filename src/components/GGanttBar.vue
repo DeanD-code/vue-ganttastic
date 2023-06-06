@@ -5,7 +5,8 @@
       top: `${nTop}px`,
       left: `${xStart}px`,
       width: `${xEnd - xStart}px`,
-      height: expended ? `${rowHeight * 2.9}px` : `${rowHeight * 0.9}px`,/** `${rowHeight * 0.8}px`*/
+      // height: expended ? `${rowHeight * 2.9}px` : `${rowHeight * 0.9}px`,/** `${rowHeight * 0.8}px`*/
+      height: `${customHeight}px`,
       zIndex: isDragging ? 3 : 2
     }"
     draggable="true"
@@ -42,7 +43,8 @@ import { BAR_CONTAINER_KEY } from "../provider/symbols"
 
 const props = defineProps<{
   bar: GanttBarObject,
-  expended : boolean
+  expended : boolean,
+  customHeight : number
 }>()
 const emitBarEvent = provideEmitBarEvent()
 const config = provideConfig()

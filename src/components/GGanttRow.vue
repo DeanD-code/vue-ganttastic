@@ -13,7 +13,7 @@
     </div>
     <div ref="barContainer" class="g-gantt-row-bars-container" v-bind="$attrs">
       <transition-group name="bar-transition" tag="div">
-        <g-gantt-bar v-for="bar in bars" :key="bar.ganttBarConfig.id" :bar="bar" :expended="expended">
+        <g-gantt-bar v-for="bar in bars" :key="bar.ganttBarConfig.id" :bar="bar" :expended="expended" :customHeight="customHeight">
           <!-- <slot :name="`simple-${bar.ganttBarConfig.id}`" /> -->
           <slot :name="`simple-${bar.ganttBarConfig.id}`" v-if="!expended" />
           <slot :name="`${bar.ganttBarConfig.id}`" v-if="expended" />
