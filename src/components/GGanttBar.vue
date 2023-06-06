@@ -6,7 +6,7 @@
       left: `${xStart}px`,
       width: `${xEnd - xStart}px`,
       // height: expended ? `${rowHeight * 2.9}px` : `${rowHeight * 0.9}px`,/** `${rowHeight * 0.8}px`*/
-      height: `${customHeight}px`,
+      height: `${customHeight * 0.90}px`,
       zIndex: isDragging ? 3 : 2
     }"
     draggable="true"
