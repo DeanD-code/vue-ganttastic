@@ -1,5 +1,7 @@
 <template>
-  <div :id="barConfig.id" class="g-gantt-bar draggable" :style="{
+  <div :id="barConfig.id" class="g-gantt-bar draggable"
+    ref="barContainer"
+    :style="{
       ...barConfig.style,
       position: 'absolute',
       top: `${nTop}px`,
@@ -7,9 +9,14 @@
       width: `${xEnd - xStart}px`,
       // height: expended ? `${rowHeight * 2.9}px` : `${rowHeight * 0.9}px`,/** `${rowHeight * 0.8}px`*/
       // height: `${customHeight * 0.90}px`,
+      // height: `${Math.min(originHeight, customHeight * 0.85)}px`
+      height: `${currentHeight}px`
+      // height: '-1px'
+
       // zIndex: isDragging ? 3 : 2
-      zIndex: isDragging ? (rowid + 1) * 5 : (rowid * 5)
+      // zIndex: isDragging ? (rowid + 1) * 5 : (rowid * 5)
     }"
+    :key="bUpdateComponent"
     draggable="true"
     @mousedown="onMouseEvent" @click="onMouseEvent" @dblclick="onMouseEvent" @mouseenter="onMouseEvent"
     @mouseleave="onMouseEvent" @contextmenu="onMouseEvent">
@@ -32,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRefs, watch, onMounted, inject } from "vue"
+import { computed, ref, toRefs, watch, onMounted, inject, onUpdated, nextTick  } from "vue"
 
 import useBarDragManagement from "../composables/useBarDragManagement.js"
 import useTimePositionMapping from "../composables/useTimePositionMapping.js"
@@ -41,11 +48,14 @@ import type { GanttBarObject } from "../types"
 import provideEmitBarEvent from "../provider/provideEmitBarEvent.js"
 import provideConfig from "../provider/provideConfig.js"
 import { BAR_CONTAINER_KEY } from "../provider/symbols"
+// import { extend } from "@vue/shared"
+// import { GanttEventBus } from "./EventBus"
 
 const props = defineProps<{
   bar: GanttBarObject,
   expended : boolean,
-  rowid : number
+  // rowid : number,
+  customHeight: number
 }>()
 const emitBarEvent = provideEmitBarEvent()
 const config = provideConfig()
@@ -56,10 +66,11 @@ const { mapTimeToPosition, mapPositionToTime } = useTimePositionMapping()
 const { initDragOfBar, initDragOfBundle } = useBarDragManagement()
 const { setDragLimitsOfGanttBar } = useBarDragLimit()
 
-const isDragging = ref(false)
-
+const isDragging = ref(false);
+const currentState = ref(true);// expanded state
 const barConfig = computed(() => bar.value.ganttBarConfig)
-
+const originHeight = ref(-1);
+const bUpdateComponent = ref(1);
 function firstMousemoveCallback(e: MouseEvent) {
   barConfig.value.bundle != null ? initDragOfBundle(bar.value, e) : initDragOfBar(bar.value, e)
   isDragging.value = true
@@ -131,6 +142,26 @@ onMounted(() => {
 const roundPosition = (curYpos : number)=>{
   nTop.value = rowHeight.value * 0.1
 }
+const currentHeight = computed(()=>{
+  // updategetOriginHeight();
+  // console.log('origin height function');
+  if(currentState.value !== props.expended){
+    currentState.value = props.expended;
+    originHeight.value = -1;
+    // console.log('origin height changed', originHeight.value);
+    bUpdateComponent.value = 1 - bUpdateComponent.value;
+    setTimeout(() => {
+      var contentElement = document.getElementById(barConfig.value.id);
+      if(contentElement != undefined) {
+        originHeight.value = contentElement.offsetHeight;
+        // console.log('timer ', originHeight.value, contentElement.offsetHeight);
+        bUpdateComponent.value = 1 - bUpdateComponent.value;
+      }
+    }, 30);
+  }
+  return Math.min(originHeight.value, props.customHeight * 0.85); 
+  // return Math.min(getOriginHeight(), props.customHeight * 0.85); 
+})
 </script>
 
 <style>

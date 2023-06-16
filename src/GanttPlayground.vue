@@ -64,8 +64,8 @@ const loadinglocationid = ref(0)
 
 const bars1 = ref<GanttBarObject[]>([
   {
-    beginDate: "2023-04-25 14:00",
-    endDate: "2023-04-25 18:00",
+    beginDate: "2023-04-25 06:00",
+    endDate: "2023-04-25 11:00",
     detail : "This is detail string",
     ganttBarConfig: {
       id: "8621987329",
@@ -77,8 +77,8 @@ const bars1 = ref<GanttBarObject[]>([
 
 const bars2 = ref([
   {
-    beginDate: "2023-04-24 17:00",
-    endDate: "2023-04-24 19:00",
+    beginDate: "2023-04-24 12:00",
+    endDate: "2023-04-24 15:00",
     detail : "This is detail string",
 
     ganttBarConfig: {
