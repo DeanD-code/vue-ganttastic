@@ -6,8 +6,9 @@
       left: `${xStart}px`,
       width: `${xEnd - xStart}px`,
       // height: expended ? `${rowHeight * 2.9}px` : `${rowHeight * 0.9}px`,/** `${rowHeight * 0.8}px`*/
-      height: `${customHeight * 0.90}px`,
-      zIndex: isDragging ? 3 : 2
+      // height: `${customHeight * 0.90}px`,
+      // zIndex: isDragging ? 3 : 2
+      zIndex: isDragging ? (rowid + 1) * 5 : (rowid * 5)
     }"
     draggable="true"
     @mousedown="onMouseEvent" @click="onMouseEvent" @dblclick="onMouseEvent" @mouseenter="onMouseEvent"
@@ -44,7 +45,7 @@ import { BAR_CONTAINER_KEY } from "../provider/symbols"
 const props = defineProps<{
   bar: GanttBarObject,
   expended : boolean,
-  customHeight : number
+  rowid : number
 }>()
 const emitBarEvent = provideEmitBarEvent()
 const config = provideConfig()
