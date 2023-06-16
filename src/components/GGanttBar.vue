@@ -154,7 +154,7 @@ const currentHeight = computed(()=>{
       var contentElement = document.getElementById(barConfig.value.id);
       if(contentElement != undefined) {
         originHeight.value = contentElement.offsetHeight;
-        // console.log('timer ', originHeight.value, contentElement.offsetHeight);
+        console.log('Height changed from to', originHeight.value, contentElement.offsetHeight);
         bUpdateComponent.value = 1 - bUpdateComponent.value;
       }
     }, 30);
