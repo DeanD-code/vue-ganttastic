@@ -59,6 +59,7 @@ const rowStyle = computed(() => {
   return {
     height: `${customHeight.value}px`,
     background: highlightOnHover?.value && isHovering.value ? colors.value.hoverHighlight : null,
+    zIndex: props.rowid * 5
   } as StyleValue
 })
 
