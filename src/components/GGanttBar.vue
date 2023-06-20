@@ -96,6 +96,7 @@ const prepareForDrag = () => {
       isDragging.value = false
       
       roundPosition(nTop.value)
+      currentState.value = !currentState.value
     },
     { once: true }
   )
