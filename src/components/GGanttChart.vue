@@ -231,6 +231,7 @@ const emitBarEvent = (
       isDragging.value = false
       emit("dragend-bar", { bar, e, movedBars })
       handleYmove(bar.yClient)
+      GanttEventBus.emit('force-toggle', bar.rowId)
       break
     case "contextmenu":
       emit("contextmenu-bar", { bar, e, datetime })
