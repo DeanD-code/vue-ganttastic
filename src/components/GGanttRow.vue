@@ -125,16 +125,17 @@ const handleDragStart = (e: any, rowid: any, label: any) => {
   // console.log('drop started');
 }
 const handleEventBus = (event: any, payload: any) => {
-  console.log('force-update', payload)
+  // console.log('force-update', payload)
   if (event == "custom-expend-rows") {
     console.log('custom-expend-rows', payload)
     toggle(payload)
   }
   if(event == "force-toggle"){
-    console.log('force-update', payload)
-    if(props.rowid == payload) {
-      toggle(expended.value)
-      toggle(expended.value)
+    console.log('force-update', payload, props.rowid )
+    if((props.rowid + 1) == payload) {
+      toggle(!expended.value)
+      toggle(!expended.value)
+      // toggle(expended.value)
     }
   }
 }
