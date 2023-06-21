@@ -156,7 +156,7 @@ const currentHeight = computed(()=>{
       var contentElement = document.getElementById(barConfig.value.id);
       if(contentElement != undefined) {
         originHeight.value = contentElement.offsetHeight;
-        console.log('Height changed from to', originHeight.value, contentElement.offsetHeight, props.customHeight);
+        console.log('Height changed from to, props', originHeight.value, contentElement.offsetHeight, props);
         bUpdateComponent.value = 1 - bUpdateComponent.value;
       }
     }, 30);
