@@ -96,7 +96,7 @@ const onDrop = (e: any, rowIdNew: any) => {//MouseEvent
   const datetime = mapPositionToTime(xPos)
   console.log('dragend expect', e, datetime)
   emit("drop", { e, datetime })
-  toggle(!expended.value);
+
 }
 
 const toggle = (isOpen: boolean) => {
@@ -124,10 +124,15 @@ const handleDragStart = (e: any, rowid: any, label: any) => {
   e.dataTransfer.setData("text/plain", jsonstring);
   // console.log('drop started');
 }
-const handleEventBus = (event: any, payload: boolean) => {
+const handleEventBus = (event: any, payload: any) => {
   if (event == "custom-expend-rows") {
     console.log('custom-expend-rows', payload)
     toggle(payload)
+  }
+  if(event == "force-toggle"){
+    if(props.rowid == payload) {
+      toggle(expended.value)
+    }
   }
 }
 
