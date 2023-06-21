@@ -47,7 +47,7 @@ export default function useTimePositionMapping(config: GGanttChartConfig = provi
       }
     })
 
-    console.log('yPos->rowID', yPos, locationid);
+    // console.log('yPos->rowID', yPos, locationid);
     return locationid
   }
   return {

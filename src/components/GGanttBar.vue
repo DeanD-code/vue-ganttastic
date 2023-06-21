@@ -118,7 +118,7 @@ const onMouseEvent = (e: MouseEvent) => {
   const datetime = mapPositionToTime(e.clientX - barContainer.left)
 
   bar.value.yClient = yPrev.value
-  console.log('barcontainer', barContainer, e.screenY, yPrev.value)
+  // console.log('barcontainer', barContainer, e.screenY, yPrev.value)
   emitBarEvent(e, bar.value, datetime)
 }
 

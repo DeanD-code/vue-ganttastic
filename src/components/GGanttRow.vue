@@ -77,7 +77,7 @@ const onDrop = (e: any, rowIdNew: any) => {//MouseEvent
   const dataTransfer = e.dataTransfer.getData("text/plain")
   const { rowid, label } = JSON.parse(dataTransfer);
   if (rowid && label) {
-    console.log("rowid", rowid, label)
+    // console.log("rowid", rowid, label)
     GanttEventBus.emit('drop-row-label', {
       locationid: rowid,
       label: label,

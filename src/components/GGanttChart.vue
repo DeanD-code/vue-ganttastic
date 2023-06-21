@@ -291,7 +291,7 @@ const handleYmove = (yClient: number) => {
 
   const parentNode = document.querySelector(".g-gantt-rows-container");
   // const firstChild = parentNode.childNodes[0];
-  console.log('yClient', yClient, parentNode); // this will output the <p> element
+  // console.log('yClient', yClient, parentNode); // this will output the <p> element
 }
 
 const handleEventBus = (event: any, payload: any) => {
