@@ -125,6 +125,7 @@ const handleDragStart = (e: any, rowid: any, label: any) => {
   // console.log('drop started');
 }
 const handleEventBus = (event: any, payload: any) => {
+  console.log('force-update', payload)
   if (event == "custom-expend-rows") {
     console.log('custom-expend-rows', payload)
     toggle(payload)
