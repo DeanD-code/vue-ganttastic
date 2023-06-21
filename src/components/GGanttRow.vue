@@ -94,7 +94,9 @@ const onDrop = (e: any, rowIdNew: any) => {//MouseEvent
   }
   const xPos = e.clientX - container.left
   const datetime = mapPositionToTime(xPos)
+  console.log('dragend expect', e, datetime)
   emit("drop", { e, datetime })
+  toggle(!expended.value);
 }
 
 const toggle = (isOpen: boolean) => {
