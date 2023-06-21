@@ -94,10 +94,7 @@ const prepareForDrag = () => {
       // in case user does not move the mouse after mousedown at all
       window.removeEventListener("mousemove", firstMousemoveCallback)
       isDragging.value = false
-      
       roundPosition(nTop.value)
-      currentState.value = !currentState.value
-      bUpdateComponent.value = 1 - bUpdateComponent.value;
     },
     { once: true }
   )
@@ -161,6 +158,7 @@ const currentHeight = computed(()=>{
       }
     }, 30);
   }
+  console.log('calc height', originHeight.value, props.customHeight);
   return Math.min(originHeight.value, props.customHeight * 0.85); 
   // return Math.min(getOriginHeight(), props.customHeight * 0.85); 
 })
