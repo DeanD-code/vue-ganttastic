@@ -130,7 +130,9 @@ const handleEventBus = (event: any, payload: any) => {
     toggle(payload)
   }
   if(event == "force-toggle"){
+    console.log('force-update', payload)
     if(props.rowid == payload) {
+      toggle(expended.value)
       toggle(expended.value)
     }
   }
