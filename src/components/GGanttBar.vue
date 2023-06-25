@@ -159,7 +159,7 @@ const currentHeight = computed(()=>{
     }, 30);
   }
   console.log('calc height', originHeight.value, props.customHeight);
-  return Math.min(originHeight.value, props.customHeight * 1); 
+  return Math.min(originHeight.value, props.customHeight - 4); 
   // return Math.min(getOriginHeight(), props.customHeight * 0.85); 
 })
 </script>
