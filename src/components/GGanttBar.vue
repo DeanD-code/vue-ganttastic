@@ -140,7 +140,8 @@ onMounted(() => {
   )
 })
 const roundPosition = (curYpos : number)=>{
-  nTop.value = rowHeight.value * 0.1
+  // nTop.value = rowHeight.value * 0.1
+  nTop.value = rowHeight.value * 0
 }
 const currentHeight = computed(()=>{
   // updategetOriginHeight();
