@@ -123,7 +123,8 @@ const { barStart, barEnd, width, chartStart, chartEnd, chartSize } = config
 
 const xStart = ref(0)
 const xEnd = ref(0)
-const nTop = ref(rowHeight.value * 0.1)
+// const nTop = ref(rowHeight.value * 0.1)
+const nTop = ref(0)
 const yPrev = ref(0)
 onMounted(() => {
   watch(
