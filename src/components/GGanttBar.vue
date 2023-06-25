@@ -32,7 +32,7 @@
       <!-- <slot /> -->
     </div>
     <template v-if="barConfig.hasHandles">
-      <div class="g-gantt-bar-handle-left" />
+      <div class="g-gantt-bar-handle-left" />test
       <div class="g-gantt-bar-handle-right" />
     </template>
   </div>
@@ -159,7 +159,7 @@ const currentHeight = computed(()=>{
     }, 30);
   }
   console.log('calc height', originHeight.value, props.customHeight);
-  return Math.min(originHeight.value, props.customHeight * 0.85); 
+  return Math.min(originHeight.value, props.customHeight * 1); 
   // return Math.min(getOriginHeight(), props.customHeight * 0.85); 
 })
 </script>
