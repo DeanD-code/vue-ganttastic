@@ -32,7 +32,7 @@
       <!-- <slot /> -->
     </div>
     <template v-if="barConfig.hasHandles">
-      <div class="g-gantt-bar-handle-left" />test
+      <div class="g-gantt-bar-handle-left" />
       <div class="g-gantt-bar-handle-right" />
     </template>
   </div>
