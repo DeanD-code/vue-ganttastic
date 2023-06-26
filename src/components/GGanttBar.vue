@@ -116,7 +116,8 @@ const { barStart, barEnd, width, chartStart, chartEnd, chartSize } = config
 
 const xStart = ref(0)
 const xEnd = ref(0)
-const nTop = ref(rowHeight.value * 0.1)
+// const nTop = ref(rowHeight.value * 0.1)
+const nTop = ref(0)
 const yPrev = ref(0)
 onMounted(() => {
   watch(
@@ -152,7 +153,7 @@ const currentHeight = computed(()=>{
     }, 30);
   }
   console.log('calc height', originHeight.value, props.customHeight);
-  return Math.min(originHeight.value, props.customHeight * 0.85); 
+  return Math.min(originHeight.value, props.customHeight * 0.98); 
   // return Math.min(getOriginHeight(), props.customHeight * 0.85); 
 })
 </script>
