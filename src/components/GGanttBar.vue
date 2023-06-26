@@ -4,6 +4,7 @@
     :style="{
       ...barConfig.style,
       position: 'absolute',
+      zIndex: isDragging ? 3 : 2,
       top: `${nTop}px`,
       left: `${xStart}px`,
       width: `${xEnd - xStart}px`,
