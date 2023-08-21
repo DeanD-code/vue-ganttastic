@@ -1,6 +1,8 @@
 <template>
-  <div :id="barConfig.id" class="g-gantt-bar draggable"
+  <div 
+    :id="barConfig.id"
     ref="barContainer"
+    :class="['g-gantt-bar draggable', barConfig.class || '']"
     :style="{
       ...barConfig.style,
       position: 'absolute',
