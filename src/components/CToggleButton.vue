@@ -1,13 +1,13 @@
 <template>
     <div class="toggle-container">
         <button @click="onClickHandler" class="toggle-button">
-        + 
+            {{ toggleSymbol }}
         </button>
     </div>
 </template>
   
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed} from 'vue'
 
 const props = defineProps<{
     customHandle: Function,
@@ -18,6 +18,8 @@ const onClickHandler = (e: MouseEvent) => {
     isOpen.value = !isOpen.value
     props.customHandle(isOpen.value)
 }
+
+const toggleSymbol = computed(() => isOpen.value ? '-' : '+')
 </script>
   
 <style>
