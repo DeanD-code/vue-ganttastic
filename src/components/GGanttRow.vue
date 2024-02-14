@@ -4,7 +4,7 @@
     @mouseleave="isHovering = false">
     <div class="g-gantt-row-label" :style="{ background: colors.primary, color: colors.text }">
       <CToggleButton :custom-handle="toggle" />
-      <div @click="$event => onLabelClick($event, rowid + 1, label)" class="labelButton" draggable="true"
+      <div @click="($event: any) => onLabelClick($event, rowid + 1, label)" class="labelButton" draggable="true"
         @dragstart="handleDragStart($event, rowid + 1, label)">
         <slot name="label">
           {{ label }}
@@ -113,7 +113,7 @@ const toggle = (isOpen: boolean) => {
   }
 
 }
-const onLabelClick = (e: Event, rowid: any, label: any) => {
+const onLabelClick = (e: any, rowid: any, label: any) => {
   e.preventDefault()
   // console.log('label event', e, rowid, label)
   GanttEventBus.emit('click-row-label', { rowid, label })
